@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ยอดไลฟ์สด — ปี 2569</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Kanit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --bg:#FFFDF7;--bg2:#FFF8EC;--bg3:#FFF3D6;
+  --border:#E8D9B0;--border2:#D4C090;
+  --text:#2C2416;--text2:#7A6840;--text3:#B09A6A;
+  --amber:#D4820A;--amber-bg:#FEF0D0;--amber-light:#FFF8E6;
+  --purple:#6B4FBB;--purple-bg:#EDE8FA;
+  --teal:#1A7A5E;--teal-bg:#E0F5EE;
+  --red:#C0392B;--red-bg:#FDECEA;
+  --blue:#1A5FA5;--blue-bg:#E5EFFA;
+  --green:#1E7A2F;--green-bg:#E5F5E8;
+  --pink:#9B2365;--pink-bg:#FDEEF5;
+  --shadow:0 2px 12px rgba(180,140,60,.10);
+  --shadow-h:0 6px 24px rgba(180,140,60,.18);
+  --r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+
+.header{background:linear-gradient(135deg,#C4720A 0%,#F0A830 50%,#C4720A 100%);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:300;box-shadow:0 3px 20px rgba(180,100,10,.3)}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-icon{font-size:24px}
+.header-title{font-family:'Kanit',sans-serif;font-size:17px;font-weight:700;color:#fff}
+.header-sub{font-size:11px;color:rgba(255,255,255,.85)}
+.header-right{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.hbadge{background:rgba(255,255,255,.22);color:#fff;padding:4px 11px;border-radius:100px;font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,.35)}
+
+.month-bar{background:var(--bg2);border-bottom:1.5px solid var(--border);padding:8px 18px;display:flex;align-items:center;gap:6px;overflow-x:auto;position:sticky;top:52px;z-index:200}
+.month-bar-label{font-size:11px;color:var(--text3);font-weight:600;white-space:nowrap;margin-right:4px}
+.mbtn{padding:4px 12px;border:1.5px solid var(--border);border-radius:100px;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg);cursor:pointer;transition:all .18s;font-family:'Sarabun',sans-serif;white-space:nowrap}
+.mbtn:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-light)}
+.mbtn.active{background:var(--amber);border-color:var(--amber);color:#fff}
+
+.nav{background:var(--bg2);border-bottom:1.5px solid var(--border);display:flex;padding:0 18px;overflow-x:auto;position:sticky;top:93px;z-index:199}
+.nav-tab{padding:10px 16px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Sarabun',sans-serif}
+.nav-tab:hover{color:var(--amber);background:var(--amber-light)}
+.nav-tab.active{color:var(--amber);border-bottom-color:var(--amber);font-weight:600}
+
+.main{padding:16px 18px;max-width:1100px;margin:0 auto}
+
+.card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.ct{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:12px;display:flex;align-items:center;gap:5px}
+.ct::before{content:'';display:block;width:3px;height:10px;background:var(--amber);border-radius:2px;flex-shrink:0}
+
+.mg{display:grid;gap:8px;margin-bottom:12px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.metric{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rs);padding:11px 13px;transition:box-shadow .18s}
+.metric:hover{box-shadow:var(--shadow-h)}
+.ml{font-size:10px;color:var(--text3);margin-bottom:3px;font-weight:600}
+.mv{font-size:20px;font-weight:700;font-family:'Kanit',sans-serif}
+.ms{font-size:10px;color:var(--text3);margin-top:2px}
+.c-amber{color:var(--amber)}.c-purple{color:var(--purple)}.c-teal{color:var(--teal)}
+.c-blue{color:var(--blue)}.c-red{color:var(--red)}.c-green{color:var(--green)}.c-pink{color:var(--pink)}
+
+.form-label{font-size:11px;color:var(--text2);font-weight:700;display:block;margin-bottom:3px;margin-top:9px}
+.form-input,.form-select{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--rs);background:var(--bg);color:var(--text);font-size:13px;font-family:'Sarabun',sans-serif;outline:none;transition:border-color .18s,box-shadow .18s}
+.form-input:focus,.form-select:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(212,130,10,.12)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fr4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+
+.cb-group{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.cb-item{display:flex;align-items:center;gap:4px;padding:4px 10px;border:1.5px solid var(--border);border-radius:100px;cursor:pointer;background:var(--bg);color:var(--text2);font-size:12px;font-weight:500;transition:all .18s;user-select:none}
+.cb-item:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-light)}
+.cb-item.checked{background:var(--amber);border-color:var(--amber);color:#fff}
+.cb-item input{display:none}
+
+.preview-box{display:none;background:linear-gradient(135deg,var(--amber-bg),var(--amber-light));border:1.5px solid var(--border2);border-radius:var(--rs);padding:10px 13px;margin-top:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.preview-box.show{display:flex}
+.prev-val{font-size:16px;font-weight:700;color:var(--amber);font-family:'Kanit',sans-serif}
+
+.btn-save{background:linear-gradient(135deg,#D4820A,#F0A830);color:#fff;border:none;border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;font-family:'Sarabun',sans-serif;cursor:pointer;width:100%;margin-top:10px;transition:all .2s;box-shadow:0 3px 12px rgba(212,130,10,.3)}
+.btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(212,130,10,.4)}
+.btn-del{background:none;border:1.5px solid var(--border);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--text3);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .18s}
+.btn-del:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
+.btn-edit{background:none;border:1.5px solid #B5D4F4;border-radius:5px;padding:3px 8px;font-size:11px;color:var(--blue);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .18s}
+.btn-edit:hover{background:var(--blue-bg)}
+.btn-cancel{background:none;border:1.5px solid var(--border);border-radius:var(--rs);padding:9px 18px;font-size:13px;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .18s;margin-top:10px;width:100%}
+.btn-cancel:hover{background:var(--bg2)}
+
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:100px;font-weight:700}
+.b-m{background:var(--amber-bg);color:#8B5200}
+.b-n{background:var(--purple-bg);color:var(--purple)}
+.b-solo{background:var(--teal-bg);color:var(--teal)}
+.b-pair{background:var(--pink-bg);color:var(--pink)}
+
+.av{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;vertical-align:middle;margin-right:2px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font-size:10px;font-weight:700;color:var(--text3);text-align:left;padding:5px 7px;border-bottom:1.5px solid var(--border);background:var(--bg2);white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
+.tbl td{padding:7px;border-bottom:1px solid var(--border);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg2)}
+.tbl tfoot td{font-weight:700;background:var(--bg3);border-top:1.5px solid var(--border2)}
+
+.kpi-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.kpi-row:last-child{margin-bottom:0}
+.kn{font-size:12px;font-weight:500;min-width:58px;display:flex;align-items:center;gap:3px;flex-shrink:0}
+.bt{flex:1;height:7px;background:var(--bg3);border-radius:100px;overflow:hidden}
+.bf{height:100%;border-radius:100px}
+.kv{font-size:11px;font-weight:700;min-width:72px;text-align:right;flex-shrink:0}
+
+.per-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:9px}
+.per-card:hover{box-shadow:var(--shadow-h)}
+.pc-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.pc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.pc-name{font-size:14px;font-weight:700}
+.pc-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.pc-right{margin-left:auto;text-align:right}
+.pc-total{font-size:16px;font-weight:700;color:var(--amber);font-family:'Kanit',sans-serif}
+.pc-total-l{font-size:10px;color:var(--text3)}
+.pc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.pc-m{background:#fff;border:1px solid var(--border);border-radius:7px;padding:7px 8px;text-align:center}
+.pc-ml{font-size:9px;color:var(--text3);margin-bottom:2px;font-weight:600}
+.pc-mv{font-size:14px;font-weight:700;font-family:'Kanit',sans-serif}
+
+.insight-card{background:linear-gradient(135deg,var(--amber-bg),#fff8e1);border:1.5px solid var(--border2);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
+.insight-title{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.pair-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pair-card:hover{box-shadow:var(--shadow-h)}
+.pair-names{font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px}
+.pair-stats{text-align:right}
+.pair-gmv{font-size:15px;font-weight:700;color:var(--amber);font-family:'Kanit',sans-serif}
+.pair-sub{font-size:10px;color:var(--text3)}
+
+.rank-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.rank-row:last-child{border-bottom:none}
+.rank-n{font-size:11px;font-weight:700;color:var(--text3);min-width:18px}
+.rank-name{flex:1;font-size:13px;font-weight:600}
+.rank-v{font-size:13px;font-weight:700}
+.rank-sub{font-size:10px;color:var(--text3)}
+
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--text3)}
+.empty-icon{font-size:36px;margin-bottom:8px}
+.empty-text{font-size:13px}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:flex-start;justify-content:center;padding:60px 16px}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:var(--r);border:1.5px solid var(--border);padding:20px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text);display:flex;align-items:center;gap:8px}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#2C2416;color:#fff;padding:9px 22px;border-radius:100px;font-size:12px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.toast.show{opacity:1}
+
+.section-sep{height:1px;background:var(--border);margin:14px 0}
+
+@media(max-width:600px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+  .fr2,.fr3,.fr4{grid-template-columns:1fr 1fr}
+  .pc-grid{grid-template-columns:repeat(2,1fr)}
+  .main{padding:12px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <span class="header-icon">🎬</span>
+    <div>
+      <div class="header-title">ยอดไลฟ์สด ปี 2569</div>
+      <div class="header-sub">บันทึก · วิเคราะห์ · เปรียบเทียบ</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="hbadge" id="hbadge-rounds">0 รอบ</span>
+    <span class="hbadge" id="hbadge-gmv">0 ฿</span>
+  </div>
+</div>
+
+<!-- MONTH NAV -->
+<div class="month-bar">
+  <span class="month-bar-label">เดือน:</span>
+  <button class="mbtn" onclick="setMonth(0)">ม.ค.</button>
+  <button class="mbtn" onclick="setMonth(1)">ก.พ.</button>
+  <button class="mbtn" onclick="setMonth(2)">มี.ค.</button>
+  <button class="mbtn active" onclick="setMonth(3)">เม.ย.</button>
+  <button class="mbtn" onclick="setMonth(4)">พ.ค.</button>
+  <button class="mbtn" onclick="setMonth(5)">มิ.ย.</button>
+  <button class="mbtn" onclick="setMonth(6)">ก.ค.</button>
+  <button class="mbtn" onclick="setMonth(7)">ส.ค.</button>
+  <button class="mbtn" onclick="setMonth(8)">ก.ย.</button>
+  <button class="mbtn" onclick="setMonth(9)">ต.ค.</button>
+  <button class="mbtn" onclick="setMonth(10)">พ.ย.</button>
+  <button class="mbtn" onclick="setMonth(11)">ธ.ค.</button>
+  <button class="mbtn" style="background:var(--blue-bg);border-color:var(--blue);color:var(--blue)" onclick="setMonth(-1)">ทั้งปี</button>
+</div>
+
+<!-- TABS -->
+<div class="nav">
+  <button class="nav-tab active" onclick="sw('input')">📝 กรอกยอด</button>
+  <button class="nav-tab" onclick="sw('dash')">📊 แดชบอร์ด</button>
+  <button class="nav-tab" onclick="sw('person')">👤 รายคน</button>
+  <button class="nav-tab" onclick="sw('insight')">🏆 วิเคราะห์เชิงลึก</button>
+  <button class="nav-tab" onclick="sw('log')">📋 ประวัติ</button>
+  <button class="nav-tab" onclick="sw('staff')">⚙️ จัดการทีม</button>
+</div>
+
+<div class="main">
+  <div id="tab-input"></div>
+  <div id="tab-dash" style="display:none"></div>
+  <div id="tab-person" style="display:none"></div>
+  <div id="tab-insight" style="display:none"></div>
+  <div id="tab-log" style="display:none"></div>
+  <div id="tab-staff" style="display:none"></div>
+</div>
+
+<!-- MODAL EDIT -->
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">✏️ แก้ไขรายการ</div>
+    <input type="hidden" id="edit-id">
+    <div class="fr2">
+      <div><label class="form-label">วันที่</label><input class="form-input" type="number" id="edit-day" min="1" max="31"></div>
+      <div><label class="form-label">กะ</label>
+        <select class="form-select" id="edit-shift">
+          <option value="morning">☀️ กะเช้า</option>
+          <option value="night">🌙 กะดึก</option>
+        </select>
+      </div>
+    </div>
+    <div><label class="form-label">ผู้ไลฟ์</label><div class="cb-group" id="edit-staff-cb"></div></div>
+    <div class="fr3">
+      <div><label class="form-label">TikTok (฿)</label><input class="form-input" type="number" id="edit-tt" min="0"></div>
+      <div><label class="form-label">Shopee (฿)</label><input class="form-input" type="number" id="edit-sp" min="0"></div>
+      <div><label class="form-label">อื่นๆ (฿)</label><input class="form-input" type="number" id="edit-ot" min="0"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">ยกเลิก</button>
+      <button class="btn-save" onclick="saveEdit()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== CONSTANTS ===== */
+const MONTHS_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const MONTHS_SH = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const DAYS_IN_MONTH = [31,28,31,30,31,30,31,31,30,31,30,31];
+const AV_PALETTE = [
+  {bg:'#FEF0D0',c:'#8B5200'},{bg:'#E5EFFA',c:'#1A5FA5'},
+  {bg:'#EDE8FA',c:'#6B4FBB'},{bg:'#E0F5EE',c:'#1A7A5E'},
+  {bg:'#FDECEA',c:'#C0392B'},{bg:'#FDEEF5',c:'#9B2365'},
+  {bg:'#EAF5DE',c:'#2E6B0A'},{bg:'#FFF3D6',c:'#7A4F00'},
+  {bg:'#E8EAF6',c:'#303F9F'},{bg:'#FCE4EC',c:'#880E4F'},
+  {bg:'#E0F7FA',c:'#006064'},{bg:'#F3E5F5',c:'#6A1B9A'},
+];
+const BAR_PALETTE = ['#D4820A','#1A5FA5','#6B4FBB','#1A7A5E','#C0392B','#9B2365','#2E6B0A','#7A4F00','#303F9F','#880E4F','#006064','#6A1B9A'];
+
+// staff = [{name, status:'active'|'inactive'|'resigned', colorIdx}]
+let staffList = [];
+
+function loadStaff(){
+  try{
+    const r=localStorage.getItem('live2569_staff');
+    if(r){ staffList=JSON.parse(r); }
+    else {
+      // default staff
+      staffList=[
+        {name:'จ๋า',status:'active',colorIdx:0},
+        {name:'กล้วย',status:'active',colorIdx:1},
+        {name:'มุก',status:'active',colorIdx:2},
+        {name:'อ้อม',status:'active',colorIdx:3},
+        {name:'อิ๋ม',status:'active',colorIdx:4},
+        {name:'แฟร้ง',status:'active',colorIdx:5},
+        {name:'จาม',status:'active',colorIdx:6},
+      ];
+      saveStaff();
+    }
+  }catch(e){staffList=[];}
+}
+function saveStaff(){try{localStorage.setItem('live2569_staff',JSON.stringify(staffList));}catch(e){}}
+
+// helpers
+function getActive(){return staffList.filter(s=>s.status==='active');}
+function getAllStaff(){return staffList;}
+function getStaffByName(name){return staffList.find(s=>s.name===name);}
+function avColForName(name){
+  const s=getStaffByName(name);
+  const idx=s?s.colorIdx:(staffList.indexOf(s)||0);
+  return AV_PALETTE[idx%AV_PALETTE.length]||AV_PALETTE[0];
+}
+function barColForName(name){
+  const s=getStaffByName(name);
+  const idx=s?s.colorIdx:0;
+  return BAR_PALETTE[idx%BAR_PALETTE.length];
+}
+function nextColorIdx(){
+  const used=staffList.map(s=>s.colorIdx);
+  for(let i=0;i<AV_PALETTE.length;i++){if(!used.includes(i))return i;}
+  return staffList.length%AV_PALETTE.length;
+}
+// keep PEOPLE as alias for active staff names (for backward compat)
+function getPeople(){return staffList.map(s=>s.name);}// all (for stats)
+
+/* ===== STATE ===== */
+let data = [];      // all entries
+let curMonth = 3;   // 0-based, -1 = all year
+let curTab = 'input';
+let charts = {};
+
+/* ===== STORAGE ===== */
+function loadData(){try{const r=localStorage.getItem('live2569');data=r?JSON.parse(r):[];}catch(e){data=[];}}
+function saveData(){try{localStorage.setItem('live2569',JSON.stringify(data));}catch(e){}updateHeader();}
+
+/* ===== UTIL ===== */
+function fmt(v){return Math.round(v||0).toLocaleString('th-TH');}
+function fmtK(v){const n=Math.round(v||0);return n>=1000?(n/1000).toFixed(1)+'K':n.toLocaleString('th-TH');}
+function dc(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+function avEl(name,sz=24){
+  const c=avColForName(name);
+  return `<span class="av" style="width:${sz}px;height:${sz}px;min-width:${sz}px;background:${c.bg};color:${c.c}">${(name||'??').slice(0,2)}</span>`;
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+function getFiltered(){
+  if(curMonth===-1) return [...data];
+  return data.filter(r=>r.month===curMonth);
+}
+function getMonthName(){return curMonth===-1?'ทั้งปี 2569':MONTHS_TH[curMonth]+' 2569';}
+function getDaysInMonth(){return curMonth===-1?365:DAYS_IN_MONTH[curMonth];}
+function isSolo(r){return r.staff.length===1;}
+function isPair(r){return r.staff.length===2;}
+function updateHeader(){
+  const total=data.reduce((s,r)=>s+r.total,0);
+  document.getElementById('hbadge-rounds').textContent=data.length+' รอบ';
+  document.getElementById('hbadge-gmv').textContent=fmtK(total)+' ฿';
+}
+
+/* ===== MONTH SELECT ===== */
+function setMonth(m){
+  curMonth=m;
+  document.querySelectorAll('.mbtn').forEach((b,i)=>{
+    const idx=i<=11?i:-1;
+    b.classList.toggle('active',idx===m);
+    if(i===12) b.classList.toggle('active',m===-1);
+  });
+  sw(curTab);
+}
+
+/* ===== TABS ===== */
+function sw(t){
+  curTab=t;
+  ['input','dash','person','insight','log','staff'].forEach((x,i)=>{
+    document.getElementById('tab-'+x).style.display=x===t?'block':'none';
+    document.querySelectorAll('.nav-tab')[i].classList.toggle('active',x===t);
+  });
+  if(t==='input') renderInput();
+  if(t==='dash') renderDash();
+  if(t==='person') renderPerson();
+  if(t==='insight') renderInsight();
+  if(t==='log') renderLog();
+  if(t==='staff') renderStaff();
+}
+
+/* ===== INPUT TAB ===== */
+function renderInput(){
+  const el=document.getElementById('tab-input');
+  const maxDay=curMonth===-1?31:DAYS_IN_MONTH[curMonth];
+  const activeStaff=getActive();
+  el.innerHTML=`
+  <div class="card">
+    <div class="ct">บันทึกยอดไลฟ์ — ${getMonthName()}</div>
+    <div class="fr3">
+      <div>
+        <label class="form-label">วันที่ * (1–${maxDay})</label>
+        <input class="form-input" type="number" id="f-day" min="1" max="${maxDay}" placeholder="เช่น 1">
+      </div>
+      <div>
+        <label class="form-label">เดือน</label>
+        <select class="form-select" id="f-month">
+          ${MONTHS_TH.map((m,i)=>`<option value="${i}" ${i===Math.max(0,curMonth)?'selected':''}>${m}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <label class="form-label">กะ *</label>
+        <select class="form-select" id="f-shift">
+          <option value="morning">☀️ กะเช้า (08.00–16.00)</option>
+          <option value="night">🌙 กะดึก (17.30–01.30)</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label class="form-label">ผู้ไลฟ์ * (เลือกได้หลายคน)</label>
+      ${activeStaff.length===0?`<div style="padding:8px;font-size:12px;color:var(--red)">⚠️ ยังไม่มีผู้ไลฟ์ที่ Active — ไปเพิ่มที่แท็บ ⚙️ จัดการทีม</div>`:''}
+      <div class="cb-group" id="staff-cb">
+        ${activeStaff.map(s=>`<label class="cb-item" id="cb-${s.name}" onclick="toggleCb(event,'${s.name}','staff-cb','chk-')">
+          <input type="checkbox" id="chk-${s.name}"> ${s.name}
+        </label>`).join('')}
+      </div>
+    </div>
+    <div class="fr3">
+      <div><label class="form-label">🎵 TikTok (฿)</label><input class="form-input" type="number" id="f-tt" min="0" placeholder="0" oninput="updatePreview()"></div>
+      <div><label class="form-label">🛍️ Shopee (฿)</label><input class="form-input" type="number" id="f-sp" min="0" placeholder="0" oninput="updatePreview()"></div>
+      <div><label class="form-label">🌐 อื่นๆ (฿)</label><input class="form-input" type="number" id="f-ot" min="0" placeholder="0" oninput="updatePreview()"></div>
+    </div>
+    <div class="preview-box" id="preview">
+      <div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:2px">ยอดรวม</div>
+        <div class="prev-val" id="prev-total">0 ฿</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:2px">เฉลี่ย/คน</div>
+        <div class="prev-val" id="prev-avg" style="color:var(--purple)">0 ฿</div>
+      </div>
+      <div style="font-size:11px;color:var(--text2)" id="prev-info">—</div>
+    </div>
+    <button class="btn-save" onclick="saveEntry()">✅ บันทึกยอด</button>
+  </div>
+  <div class="card" id="recent-card">
+    <div class="ct">บันทึกล่าสุด (${getMonthName()})</div>
+    <div id="recent-list"></div>
+  </div>`;
+  renderRecentList();
+}
+
+function toggleCb(e,name,groupId,prefix){
+  e.preventDefault();
+  const chk=document.getElementById((prefix||'chk-')+name);
+  if(chk){chk.checked=!chk.checked;}
+  document.querySelector(`#${groupId} #cb-${name}`)?.classList.toggle('checked',chk?.checked);
+  if(groupId==='staff-cb') updatePreview();
+}
+
+function updatePreview(){
+  const tt=parseFloat(document.getElementById('f-tt')?.value)||0;
+  const sp=parseFloat(document.getElementById('f-sp')?.value)||0;
+  const ot=parseFloat(document.getElementById('f-ot')?.value)||0;
+  const total=tt+sp+ot;
+  const sel=PEOPLE.filter(p=>document.getElementById('chk-'+p)?.checked);
+  const avg=sel.length>0?total/sel.length:total;
+  const pv=document.getElementById('preview');
+  if(!pv)return;
+  if(total>0){
+    pv.classList.add('show');
+    document.getElementById('prev-total').textContent=fmt(total)+' ฿';
+    document.getElementById('prev-avg').textContent=fmt(avg)+' ฿';
+    document.getElementById('prev-info').textContent=
+      sel.length===1?`เดี่ยว — ${sel[0]}`:
+      sel.length===2?`คู่ — ${sel.join(' + ')}`:
+      sel.length>2?`ทีม ${sel.length} คน — ${sel.join(', ')}`:
+      'ยังไม่ได้เลือก';
+  } else {
+    pv.classList.remove('show');
+  }
+}
+
+function saveEntry(){
+  const day=parseInt(document.getElementById('f-day')?.value);
+  const month=parseInt(document.getElementById('f-month')?.value);
+  const shift=document.getElementById('f-shift')?.value;
+  const staff=getActive().map(s=>s.name).filter(p=>document.getElementById('chk-'+p)?.checked);
+  const tt=parseFloat(document.getElementById('f-tt')?.value)||0;
+  const sp=parseFloat(document.getElementById('f-sp')?.value)||0;
+  const ot=parseFloat(document.getElementById('f-ot')?.value)||0;
+  const total=tt+sp+ot;
+  const maxDay=DAYS_IN_MONTH[month]||31;
+  if(!day||day<1||day>maxDay){showToast('⚠️ วันที่ไม่ถูกต้อง');return;}
+  if(!staff.length){showToast('⚠️ เลือกผู้ไลฟ์อย่างน้อย 1 คน');return;}
+  if(!total){showToast('⚠️ กรอกยอดขายก่อนนะคะ');return;}
+  const entry={id:Date.now(),day,month,shift,staff,tt,sp,ot,total,avg:Math.round(total/staff.length),count:staff.length};
+  data.push(entry);
+  saveData();
+  showToast(`✅ บันทึกวันที่ ${day} ${MONTHS_SH[month]} ยอด ${fmt(total)} ฿`);
+  ['f-tt','f-sp','f-ot','f-day'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  getActive().forEach(s=>{
+    const chk=document.getElementById('chk-'+s.name);if(chk)chk.checked=false;
+    document.getElementById('cb-'+s.name)?.classList.remove('checked');
+  });
+  document.getElementById('preview')?.classList.remove('show');
+  renderRecentList();
+}
+
+function renderRecentList(){
+  const el=document.getElementById('recent-list');
+  if(!el)return;
+  const rows=getFiltered().sort((a,b)=>b.day-a.day||b.id-a.id).slice(0,8);
+  if(!rows.length){el.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">ยังไม่มีข้อมูลเดือนนี้</div></div>';return;}
+  el.innerHTML=rows.map(r=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);gap:6px">
+      <div style="display:flex;align-items:center;gap:6px;min-width:0;flex:1">
+        <span style="font-size:11px;font-weight:700;color:var(--text3);min-width:38px">วันที่ ${r.day}</span>
+        <span class="badge ${r.shift==='morning'?'b-m':'b-n'}">${r.shift==='morning'?'☀️เช้า':'🌙ดึก'}</span>
+        <span class="badge ${r.staff.length===1?'b-solo':'b-pair'}">${r.staff.length===1?'เดี่ยว':'คู่/ทีม'}</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${r.staff.map(s=>avEl(s)).join('')}${r.staff.join(', ')}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <span style="font-weight:700;color:var(--amber);font-family:Kanit,sans-serif">${fmt(r.total)} ฿</span>
+        <button class="btn-edit" onclick="openEdit(${r.id})">✏️</button>
+        <button class="btn-del" onclick="delEntry(${r.id})">🗑️</button>
+      </div>
+    </div>`).join('')+`<div style="font-size:11px;color:var(--text3);padding:6px 0 0">แสดง ${rows.length} รายการล่าสุด — ดูทั้งหมดที่แท็บ ประวัติ</div>`;
+}
+
+/* ===== DASHBOARD ===== */
+function renderDash(){
+  const el=document.getElementById('tab-dash');
+  const fd=getFiltered();
+  if(!fd.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-text">ยังไม่มีข้อมูล ${getMonthName()}</div></div>`;return;}
+  const totalGmv=fd.reduce((s,r)=>s+r.total,0);
+  const ttGmv=fd.reduce((s,r)=>s+r.tt,0);
+  const spGmv=fd.reduce((s,r)=>s+r.sp,0);
+  const morningGmv=fd.filter(r=>r.shift==='morning').reduce((s,r)=>s+r.total,0);
+  const nightGmv=fd.filter(r=>r.shift==='night').reduce((s,r)=>s+r.total,0);
+  const days=new Set(fd.map(r=>r.month+'-'+r.day)).size;
+  const rounds=fd.length;
+  const soloGmv=fd.filter(r=>isSolo(r)).reduce((s,r)=>s+r.total,0);
+  const pairGmv=fd.filter(r=>!isSolo(r)).reduce((s,r)=>s+r.total,0);
+
+  const personTotals=getPeople().map((p)=>{
+    const s=getStaffByName(p);
+    const i=s?s.colorIdx:0;
+    const rows=fd.filter(r=>r.staff.includes(p));
+    const tot=rows.reduce((s,r)=>s+r.avg,0);
+    return {name:p,i,total:tot,count:rows.length,avg:rows.length?Math.round(tot/rows.length):0};
+  }).filter(x=>x.count>0).sort((a,b)=>b.total-a.total);
+  const maxP=personTotals[0]?.total||1;
+
+  // daily chart data
+  let dayMap={};
+  if(curMonth===-1){
+    fd.forEach(r=>{const k=r.month;dayMap[k]=(dayMap[k]||0)+r.total;});
+  } else {
+    fd.forEach(r=>{dayMap[r.day]=(dayMap[r.day]||0)+r.total;});
+  }
+  const dKeys=Object.keys(dayMap).map(Number).sort((a,b)=>a-b);
+  const dVals=dKeys.map(k=>dayMap[k]);
+  const dLabels=curMonth===-1?dKeys.map(k=>MONTHS_SH[k]):dKeys.map(k=>`${k}`);
+
+  el.innerHTML=`
+  <div class="mg g4">
+    <div class="metric"><div class="ml">ยอดรวม — ${getMonthName()}</div><div class="mv c-amber">${fmtK(totalGmv)}</div><div class="ms">บาท</div></div>
+    <div class="metric"><div class="ml">☀️ กะเช้า</div><div class="mv" style="color:#B07800">${fmtK(morningGmv)}</div><div class="ms">${totalGmv?Math.round(morningGmv/totalGmv*100):0}%</div></div>
+    <div class="metric"><div class="ml">🌙 กะดึก</div><div class="mv c-purple">${fmtK(nightGmv)}</div><div class="ms">${totalGmv?Math.round(nightGmv/totalGmv*100):0}%</div></div>
+    <div class="metric"><div class="ml">รอบทั้งหมด</div><div class="mv c-teal">${rounds}</div><div class="ms">${days} วันที่มีข้อมูล</div></div>
+  </div>
+  <div class="mg g4">
+    <div class="metric"><div class="ml">🎵 TikTok</div><div class="mv c-blue">${fmtK(ttGmv)}</div><div class="ms">${totalGmv?Math.round(ttGmv/totalGmv*100):0}%</div></div>
+    <div class="metric"><div class="ml">🛍️ Shopee</div><div class="mv c-red">${fmtK(spGmv)}</div><div class="ms">${totalGmv?Math.round(spGmv/totalGmv*100):0}%</div></div>
+    <div class="metric"><div class="ml">🎤 ไลฟ์เดี่ยว</div><div class="mv c-teal">${fmtK(soloGmv)}</div><div class="ms">${fd.filter(r=>isSolo(r)).length} รอบ</div></div>
+    <div class="metric"><div class="ml">👫 ไลฟ์คู่/ทีม</div><div class="mv c-pink">${fmtK(pairGmv)}</div><div class="ms">${fd.filter(r=>!isSolo(r)).length} รอบ</div></div>
+  </div>
+  <div class="g2" style="display:grid;gap:10px;margin-bottom:12px">
+    <div class="card">
+      <div class="ct">${curMonth===-1?'ยอดรายเดือน':'ยอดรายวัน'}</div>
+      <div style="position:relative;height:170px"><canvas id="daily-chart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">สัดส่วนกะ</div>
+      <div style="position:relative;height:120px"><canvas id="shift-chart"></canvas></div>
+      <div style="display:flex;gap:12px;margin-top:8px;font-size:11px;color:var(--text2);flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D4820A;display:inline-block"></span>เช้า ${totalGmv?Math.round(morningGmv/totalGmv*100):0}%</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#6B4FBB;display:inline-block"></span>ดึก ${totalGmv?Math.round(nightGmv/totalGmv*100):0}%</span>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">อันดับยอดรวมรายคน</div>
+    ${personTotals.map((p,rank)=>{
+      const medal=rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'';
+      const w=Math.round(p.total/maxP*100);
+      const bc=barColForName(p.name);
+      return `<div class="kpi-row">
+        <div class="kn">${avEl(p.name)} ${p.name}</div>
+        <div class="bt"><div class="bf" style="width:${w}%;background:${bc}"></div></div>
+        <div class="kv" style="color:${bc}">${fmtK(p.total)} ฿ <span style="color:var(--text3);font-weight:400;font-size:10px">${p.count}รอบ ${medal}</span></div>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  setTimeout(()=>{
+    dc('daily-chart');
+    charts['daily-chart']=new Chart(document.getElementById('daily-chart'),{
+      type:'bar',data:{labels:dLabels,datasets:[{data:dVals,backgroundColor:'#F0A830',borderRadius:4,borderWidth:0}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#B09A6A',maxRotation:45}},
+                y:{grid:{color:'rgba(180,150,80,.1)'},ticks:{callback:v=>fmtK(v),font:{size:9},color:'#B09A6A'}}}}
+    });
+    dc('shift-chart');
+    charts['shift-chart']=new Chart(document.getElementById('shift-chart'),{
+      type:'doughnut',data:{labels:['กะเช้า','กะดึก'],datasets:[{data:[morningGmv,nightGmv],backgroundColor:['#D4820A','#6B4FBB'],borderWidth:0,hoverOffset:3}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}
+    });
+  },80);
+}
+
+/* ===== PERSON TAB ===== */
+function renderPerson(){
+  const el=document.getElementById('tab-person');
+  const fd=getFiltered();
+  if(!fd.length){el.innerHTML=`<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">ยังไม่มีข้อมูล</div></div>`;return;}
+  const persons=getPeople().map((p)=>{
+    const s=getStaffByName(p);
+    const i=s?s.colorIdx:0;
+    const rows=fd.filter(r=>r.staff.includes(p));
+    if(!rows.length)return null;
+    const total=rows.reduce((s,r)=>s+r.avg,0);
+    const count=rows.length;
+    const avg=Math.round(total/count);
+    const max=Math.max(...rows.map(r=>r.avg));
+    const solo=rows.filter(r=>isSolo(r));
+    const pair=rows.filter(r=>!isSolo(r));
+    const soloAvg=solo.length?Math.round(solo.reduce((s,r)=>s+r.avg,0)/solo.length):0;
+    const pairAvg=pair.length?Math.round(pair.reduce((s,r)=>s+r.avg,0)/pair.length):0;
+    const morning=rows.filter(r=>r.shift==='morning').length;
+    const night=rows.filter(r=>r.shift==='night').length;
+    const tt=rows.reduce((s,r)=>s+Math.round(r.tt/(r.count||1)),0);
+    const sp=rows.reduce((s,r)=>s+Math.round(r.sp/(r.count||1)),0);
+    const status=s?s.status:'active';
+    return {name:p,i,total,count,avg,max,morning,night,tt,sp,soloCount:solo.length,pairCount:pair.length,soloAvg,pairAvg,status};
+  }).filter(Boolean).sort((a,b)=>b.total-a.total);
+
+  const maxT=persons[0]?.total||1;
+
+  el.innerHTML=`
+  <div class="card" style="margin-bottom:12px">
+    <div class="ct">เปรียบเทียบยอดรวมรายคน</div>
+    <div style="position:relative;height:${persons.length*36+70}px"><canvas id="p-bar"></canvas></div>
+  </div>
+  ${persons.map((p,rank)=>{
+    const medal=rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'';
+    const c=avColForName(p.name);
+    const bc=barColForName(p.name);
+    const statusChip=p.status==='resigned'
+      ?`<span style="font-size:10px;background:var(--red-bg);color:var(--red);padding:2px 7px;border-radius:100px;font-weight:600">ลาออกแล้ว</span>`
+      :p.status==='inactive'
+      ?`<span style="font-size:10px;background:var(--bg3);color:var(--text3);padding:2px 7px;border-radius:100px;font-weight:600">พักงาน</span>`
+      :'';
+    return `<div class="per-card">
+      <div class="pc-head">
+        <div class="pc-av" style="background:${c.bg};color:${c.c}">${p.name.slice(0,2)}</div>
+        <div>
+          <div class="pc-name">${medal} ${p.name} ${statusChip}</div>
+          <div class="pc-sub">${p.count} รอบ · ☀️${p.morning} 🌙${p.night} · 🎤${p.soloCount} 👫${p.pairCount}</div>
+        </div>
+        <div class="pc-right">
+          <div class="pc-total">${fmtK(p.total)}</div>
+          <div class="pc-total-l">บาทรวม</div>
+        </div>
+      </div>
+      <div class="pc-grid">
+        <div class="pc-m"><div class="pc-ml">เฉลี่ย/รอบ</div><div class="pc-mv c-purple">${fmtK(p.avg)}</div></div>
+        <div class="pc-m"><div class="pc-ml">สูงสุด/รอบ</div><div class="pc-mv c-teal">${fmtK(p.max)}</div></div>
+        <div class="pc-m"><div class="pc-ml">เดี่ยว เฉลี่ย</div><div class="pc-mv c-teal">${p.soloAvg?fmtK(p.soloAvg):'—'}</div></div>
+        <div class="pc-m"><div class="pc-ml">คู่ เฉลี่ย</div><div class="pc-mv c-pink">${p.pairAvg?fmtK(p.pairAvg):'—'}</div></div>
+        <div class="pc-m"><div class="pc-ml">TikTok</div><div class="pc-mv c-blue">${fmtK(p.tt)}</div></div>
+        <div class="pc-m"><div class="pc-ml">Shopee</div><div class="pc-mv c-red">${fmtK(p.sp)}</div></div>
+        <div class="pc-m"><div class="pc-ml">จำนวนรอบ</div><div class="pc-mv c-amber">${p.count}</div></div>
+        <div class="pc-m"><div class="pc-ml">ยอดรวม</div><div class="pc-mv c-amber">${fmtK(p.total)}</div></div>
+      </div>
+    </div>`;
+  }).join('')}`;
+
+  setTimeout(()=>{
+    dc('p-bar');
+    const labels=persons.map(p=>p.name);
+    const vals=persons.map(p=>p.total);
+    const colors=persons.map(p=>barColForName(p.name));
+    charts['p-bar']=new Chart(document.getElementById('p-bar'),{
+      type:'bar',data:{labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:5,borderWidth:0}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{x:{grid:{color:'rgba(180,150,80,.1)'},ticks:{callback:v=>fmtK(v),font:{size:9},color:'#B09A6A'}},
+                y:{grid:{display:false},ticks:{font:{size:12,family:'Sarabun'},color:'#2C2416'}}}}
+    });
+  },80);
+}
+
+/* ===== INSIGHT TAB ===== */
+function renderInsight(){
+  const el=document.getElementById('tab-insight');
+  const fd=getFiltered();
+  if(fd.length<2){el.innerHTML=`<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">ต้องมีข้อมูลอย่างน้อย 2 รอบ</div></div>`;return;}
+
+  const soloRows=fd.filter(r=>isSolo(r));
+  const pairRows=fd.filter(r=>isPair(r));
+
+  // === 1. เดี่ยว ranking ===
+  const soloStats=getPeople().map((p)=>{
+    const rows=soloRows.filter(r=>r.staff[0]===p||r.staff.includes(p)&&r.staff.length===1);
+    if(!rows.length)return null;
+    const total=rows.reduce((s,r)=>s+r.total,0);
+    const avg=Math.round(total/rows.length);
+    const max=Math.max(...rows.map(r=>r.total));
+    const s=getStaffByName(p);
+    return {name:p,i:s?s.colorIdx:0,count:rows.length,total,avg,max};
+  }).filter(Boolean).sort((a,b)=>b.avg-a.avg);
+
+  // === 2. คู่ ranking ===
+  const pairMap={};
+  pairRows.forEach(r=>{
+    if(r.staff.length===2){
+      const key=[...r.staff].sort().join(' + ');
+      if(!pairMap[key]){pairMap[key]={key,names:r.staff,rows:[]};}
+      pairMap[key].rows.push(r);
+    }
+  });
+  const pairStats=Object.values(pairMap).map(p=>{
+    const rows=p.rows;
+    const total=rows.reduce((s,r)=>s+r.total,0);
+    const avg=Math.round(total/rows.length);
+    const max=Math.max(...rows.map(r=>r.total));
+    return {...p,count:rows.length,total,avg,max};
+  }).sort((a,b)=>b.avg-a.avg);
+
+  // === 3. เฉลี่ยรอบเท่ากัน (normalized per round) ===
+  const allPersonStats=getPeople().map((p)=>{
+    const s=getStaffByName(p);
+    const rows=fd.filter(r=>r.staff.includes(p));
+    if(!rows.length)return null;
+    const avg=Math.round(rows.reduce((s,r)=>s+r.avg,0)/rows.length);
+    return {name:p,i:s?s.colorIdx:0,count:rows.length,avg,total:rows.reduce((s,r)=>s+r.avg,0)};
+  }).filter(Boolean).sort((a,b)=>b.avg-a.avg);
+
+  const normalRounds=10;
+  const normalStats=allPersonStats.map(p=>({...p,projected:p.avg*normalRounds})).sort((a,b)=>b.projected-a.projected);
+  const maxNorm=normalStats[0]?.projected||1;
+
+  const soloVsPair=getPeople().map((p)=>{
+    const solo=soloRows.filter(r=>r.staff.includes(p));
+    const pair=pairRows.filter(r=>r.staff.includes(p));
+    if(!solo.length&&!pair.length)return null;
+    const soloAvg=solo.length?Math.round(solo.reduce((s,r)=>s+r.avg,0)/solo.length):null;
+    const pairAvg=pair.length?Math.round(pair.reduce((s,r)=>s+r.avg,0)/pair.length):null;
+    const better=soloAvg&&pairAvg?(soloAvg>pairAvg?'เดี่ยว':'คู่'):soloAvg?'เดี่ยว':pairAvg?'คู่':'—';
+    return {name:p,soloAvg,pairAvg,soloCount:solo.length,pairCount:pair.length,better};
+  }).filter(Boolean);
+
+  el.innerHTML=`
+  <!-- SOLO RANKING -->
+  <div class="insight-card">
+    <div class="insight-title">🎤 อันดับไลฟ์เดี่ยว (เฉลี่ย/รอบ)</div>
+    ${soloStats.length?soloStats.map((p,rank)=>{
+      const medal=rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'';
+      const c=AVCOLS[p.i];
+      const bc=BARCOLS[p.i%BARCOLS.length];
+      return `<div class="pair-card">
+        <div class="pair-names">${medal} <div style="width:30px;height:30px;border-radius:50%;background:${c.bg};color:${c.c};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${p.name.slice(0,2)}</div> ${p.name}</div>
+        <div class="pair-stats">
+          <div class="pair-gmv">${fmtK(p.avg)} ฿/รอบ</div>
+          <div class="pair-sub">${p.count} รอบ · สูงสุด ${fmtK(p.max)} ฿</div>
+        </div>
+      </div>`;
+    }).join(''):'<div class="empty" style="padding:1rem">ยังไม่มีข้อมูลไลฟ์เดี่ยว</div>'}
+  </div>
+
+  <!-- PAIR RANKING -->
+  <div class="insight-card">
+    <div class="insight-title">👫 คู่ปัง! อันดับไลฟ์คู่ (เฉลี่ย/รอบ)</div>
+    ${pairStats.length?pairStats.map((p,rank)=>{
+      const medal=rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'';
+      const names=p.key.split(' + ');
+      return `<div class="pair-card">
+        <div class="pair-names">${medal} ${names.map(n=>avEl(n,28)).join('')} <span style="font-size:13px">${p.key}</span></div>
+        <div class="pair-stats">
+          <div class="pair-gmv">${fmtK(p.avg)} ฿/รอบ</div>
+          <div class="pair-sub">${p.count} รอบ · สูงสุด ${fmtK(p.max)} ฿</div>
+        </div>
+      </div>`;
+    }).join(''):'<div class="empty" style="padding:1rem">ยังไม่มีข้อมูลไลฟ์คู่</div>'}
+  </div>
+
+  <!-- SOLO VS PAIR PER PERSON -->
+  <div class="insight-card">
+    <div class="insight-title">⚖️ เดี่ยว vs คู่ — แต่ละคนเหมาะอะไร?</div>
+    <div style="overflow-x:auto">
+    <table class="tbl" style="min-width:420px">
+      <thead><tr>
+        <th>ชื่อ</th>
+        <th style="text-align:right">เดี่ยว เฉลี่ย/รอบ</th>
+        <th style="text-align:right">คู่ เฉลี่ย/รอบ</th>
+        <th style="text-align:center">เหมาะกับ</th>
+      </tr></thead>
+      <tbody>
+      ${soloVsPair.map(p=>{
+        const better=p.better;
+        const chip=better==='เดี่ยว'?'<span class="badge b-solo">🎤 เดี่ยวปัง</span>':
+                   better==='คู่'?'<span class="badge b-pair">👫 คู่ปัง</span>':
+                   '<span class="badge" style="background:var(--bg3);color:var(--text3)">ยังไม่มีครบ</span>';
+        return `<tr>
+          <td>${avEl(p.name,22)} ${p.name}</td>
+          <td style="text-align:right;color:var(--teal);font-weight:600">${p.soloAvg?fmtK(p.soloAvg)+' ฿':'—'} <span style="color:var(--text3);font-size:10px">(${p.soloCount}รอบ)</span></td>
+          <td style="text-align:right;color:var(--pink);font-weight:600">${p.pairAvg?fmtK(p.pairAvg)+' ฿':'—'} <span style="color:var(--text3);font-size:10px">(${p.pairCount}รอบ)</span></td>
+          <td style="text-align:center">${chip}</td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- NORMALIZED: ถ้าไลฟ์เท่ากัน -->
+  <div class="insight-card">
+    <div class="insight-title">📐 ถ้าทุกคนไลฟ์ ${normalRounds} รอบเท่ากัน — ใครทำยอดได้มากสุด?</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:10px">คำนวณจากยอดเฉลี่ย/รอบ × ${normalRounds} รอบ (ไม่รวมจำนวนรอบจริง)</div>
+    ${normalStats.map((p,rank)=>{
+      const medal=rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'';
+      const w=Math.round(p.projected/maxNorm*100);
+      const bc=barColForName(p.name);
+      return `<div class="kpi-row">
+        <div class="kn">${avEl(p.name)} ${p.name}</div>
+        <div class="bt"><div class="bf" style="width:${w}%;background:${bc}"></div></div>
+        <div class="kv" style="color:${bc}">${fmtK(p.projected)} ฿ <span style="color:var(--text3);font-size:10px;font-weight:400">${medal}</span></div>
+      </div>`;
+    }).join('')}
+    <div style="font-size:10px;color:var(--text3);margin-top:8px">* ยอดจริงอาจต่างกัน ขึ้นอยู่กับจำนวนรอบที่ไลฟ์จริง</div>
+  </div>
+
+  <!-- RANKING ALL: เฉลี่ยต่อรอบ -->
+  <div class="insight-card">
+    <div class="insight-title">💰 อันดับยอดเฉลี่ย/รอบ (รวมทุกแบบ)</div>
+    ${allPersonStats.map((p,rank)=>{
+      const medal=rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'';
+      const c=avColForName(p.name);
+      return `<div class="pair-card">
+        <div class="pair-names">${medal} <div style="width:28px;height:28px;border-radius:50%;background:${c.bg};color:${c.c};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">${p.name.slice(0,2)}</div> ${p.name}</div>
+        <div class="pair-stats">
+          <div class="pair-gmv">${fmtK(p.avg)} ฿/รอบ</div>
+          <div class="pair-sub">${p.count} รอบ</div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+/* ===== LOG TAB ===== */
+function renderLog(){
+  const el=document.getElementById('tab-log');
+  const fd=getFiltered();
+  if(!fd.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">ยังไม่มีประวัติ</div></div>`;return;}
+  const sorted=[...fd].sort((a,b)=>b.month-a.month||b.day-a.day||b.id-a.id);
+  const totalGmv=fd.reduce((s,r)=>s+r.total,0);
+  const ttGmv=fd.reduce((s,r)=>s+r.tt,0);
+  const spGmv=fd.reduce((s,r)=>s+r.sp,0);
+  el.innerHTML=`<div class="card"><div style="overflow-x:auto"><table class="tbl" style="min-width:620px">
+    <thead><tr>
+      <th style="width:70px">วันที่</th>
+      <th style="width:50px">กะ</th>
+      <th style="width:45px">ประเภท</th>
+      <th style="width:120px">ผู้ไลฟ์</th>
+      <th style="width:75px;text-align:right">TikTok</th>
+      <th style="width:65px;text-align:right">Shopee</th>
+      <th style="width:80px;text-align:right">รวม (฿)</th>
+      <th style="width:70px;text-align:right">เฉลี่ย/คน</th>
+      <th style="width:60px;text-align:center">จัดการ</th>
+    </tr></thead>
+    <tbody>
+    ${sorted.map(r=>`<tr>
+      <td style="font-weight:600">${r.day} ${MONTHS_SH[r.month]}</td>
+      <td><span class="badge ${r.shift==='morning'?'b-m':'b-n'}">${r.shift==='morning'?'☀️':'🌙'}</span></td>
+      <td><span class="badge ${isSolo(r)?'b-solo':'b-pair'}">${isSolo(r)?'เดี่ยว':'คู่'}</span></td>
+      <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis">${r.staff.map(s=>avEl(s,20)).join('')} ${r.staff.join(', ')}</td>
+      <td style="text-align:right;color:var(--blue)">${fmt(r.tt)}</td>
+      <td style="text-align:right;color:var(--red)">${r.sp?fmt(r.sp):'—'}</td>
+      <td style="text-align:right;font-weight:700;color:var(--amber);font-family:Kanit,sans-serif">${fmt(r.total)}</td>
+      <td style="text-align:right;color:var(--purple)">${fmt(r.avg)}</td>
+      <td style="text-align:center;white-space:nowrap">
+        <button class="btn-edit" onclick="openEdit(${r.id})">✏️</button>
+        <button class="btn-del" onclick="delEntry(${r.id})">🗑️</button>
+      </td>
+    </tr>`).join('')}
+    </tbody>
+    <tfoot><tr>
+      <td colspan="4">รวม ${fd.length} รอบ</td>
+      <td style="text-align:right;color:var(--blue)">${fmt(ttGmv)}</td>
+      <td style="text-align:right;color:var(--red)">${fmt(spGmv)}</td>
+      <td style="text-align:right;color:var(--amber)">${fmt(totalGmv)}</td>
+      <td colspan="2"></td>
+    </tr></tfoot>
+  </table></div></div>`;
+}
+
+/* ===== STAFF MANAGEMENT TAB ===== */
+function renderStaff(){
+  const el=document.getElementById('tab-staff');
+  const all=getAllStaff();
+  const active=all.filter(s=>s.status==='active');
+  const inactive=all.filter(s=>s.status==='inactive');
+  const resigned=all.filter(s=>s.status==='resigned');
+  function getRounds(name){return data.filter(r=>r.staff.includes(name)).length;}
+  function getTotal(name){return data.filter(r=>r.staff.includes(name)).reduce((s,r)=>s+r.avg,0);}
+  function staffRow(s){
+    const c=avColForName(s.name);
+    const rounds=getRounds(s.name);
+    const total=getTotal(s.name);
+    const statusLabel=s.status==='active'
+      ?'<span style="font-size:10px;background:var(--teal-bg);color:var(--teal);padding:2px 8px;border-radius:100px;font-weight:700">Active</span>'
+      :s.status==='inactive'
+      ?'<span style="font-size:10px;background:var(--bg3);color:var(--text3);padding:2px 8px;border-radius:100px;font-weight:700">พักงาน</span>'
+      :'<span style="font-size:10px;background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:100px;font-weight:700">ลาออก</span>';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+      <div style="width:34px;height:34px;border-radius:50%;background:${c.bg};color:${c.c};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${s.name.slice(0,2)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap">${s.name} ${statusLabel}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:1px">${rounds} รอบ · ยอดรวม ${fmtK(total)} ฿</div>
+      </div>
+      <div style="display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
+        ${s.status!=='active'?`<button class="btn-edit" onclick="setStaffStatus('${s.name}','active')">✅ Active</button>`:''}
+        ${s.status==='active'?`<button class="btn-sm" style="font-size:11px" onclick="setStaffStatus('${s.name}','inactive')">⏸️ พัก</button>`:''}
+        ${s.status!=='resigned'?`<button class="btn-sm" style="font-size:11px" onclick="confirmResign('${s.name}')">🚪 ลาออก</button>`:''}
+        ${rounds===0?`<button class="btn-del" onclick="removeStaff('${s.name}')">🗑️</button>`:''}
+      </div>
+    </div>`;
+  }
+  el.innerHTML=`
+  <div class="card">
+    <div class="ct">เพิ่มผู้ไลฟ์ใหม่</div>
+    <div class="fr3" style="align-items:flex-end">
+      <div style="grid-column:span 2">
+        <label class="form-label">ชื่อผู้ไลฟ์ *</label>
+        <input class="form-input" type="text" id="new-staff-name" placeholder="เช่น น้องใหม่" maxlength="20">
+      </div>
+      <div>
+        <label class="form-label">&nbsp;</label>
+        <button class="btn-save" style="margin-top:0" onclick="addStaff()">+ เพิ่ม</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">ทีมปัจจุบัน — Active (${active.length} คน)</div>
+    ${active.length?active.map(staffRow).join(''):'<div class="empty" style="padding:1rem">ยังไม่มีสมาชิก Active</div>'}
+  </div>
+  ${inactive.length?`<div class="card">
+    <div class="ct">พักงานชั่วคราว (${inactive.length} คน)</div>
+    ${inactive.map(staffRow).join('')}
+    <div style="font-size:11px;color:var(--text3);padding-top:8px;margin-top:4px;border-top:1px solid var(--border)">คนที่พักงานจะไม่แสดงในตัวเลือกผู้ไลฟ์ แต่สถิติเก่ายังคงอยู่</div>
+  </div>`:''}
+  ${resigned.length?`<div class="card">
+    <div class="ct">ลาออกแล้ว (${resigned.length} คน)</div>
+    ${resigned.map(staffRow).join('')}
+    <div style="font-size:11px;color:var(--text3);padding-top:8px;margin-top:4px;border-top:1px solid var(--border)">สถิติทั้งหมดยังเก็บไว้ครบ เพื่อดูย้อนหลังได้</div>
+  </div>`:''}
+  <div style="font-size:12px;color:var(--text3);padding:6px 4px;line-height:1.8">
+    💡 <b>หมายเหตุ:</b> เปลี่ยนสถานะไม่กระทบสถิติย้อนหลัง · ลบได้เฉพาะคนที่ยังไม่มีบันทึก (0 รอบ)
+  </div>`;
+}
+
+function addStaff(){
+  const name=document.getElementById('new-staff-name').value.trim();
+  if(!name){showToast('⚠️ กรุณากรอกชื่อ');return;}
+  if(staffList.find(s=>s.name===name)){showToast('⚠️ มีชื่อนี้อยู่แล้ว');return;}
+  staffList.push({name,status:'active',colorIdx:nextColorIdx()});
+  saveStaff();
+  document.getElementById('new-staff-name').value='';
+  showToast(`✅ เพิ่ม ${name} แล้ว`);
+  renderStaff();
+}
+
+function setStaffStatus(name,status){
+  const s=staffList.find(x=>x.name===name);
+  if(s){s.status=status;saveStaff();}
+  const labels={active:'Active แล้ว',inactive:'พักงานแล้ว',resigned:'บันทึกการลาออกแล้ว'};
+  showToast(`${name} — ${labels[status]}`);
+  renderStaff();
+}
+
+function confirmResign(name){
+  if(confirm(`ยืนยันว่า ${name} ลาออก?\nสถิติทั้งหมดจะยังคงอยู่ แต่จะไม่แสดงในตัวเลือกผู้ไลฟ์อีกต่อไป`)){
+    setStaffStatus(name,'resigned');
+  }
+}
+
+function removeStaff(name){
+  const rounds=data.filter(r=>r.staff.includes(name)).length;
+  if(rounds>0){showToast('⚠️ ลบไม่ได้ เพราะมีบันทึกอยู่แล้ว');return;}
+  if(!confirm(`ลบ ${name} ออกจากระบบ?`))return;
+  staffList=staffList.filter(s=>s.name!==name);
+  saveStaff();
+  showToast(`🗑️ ลบ ${name} แล้ว`);
+  renderStaff();
+}
+
+/* ===== EDIT MODAL ===== */
+function openEdit(id){
+  const r=data.find(x=>x.id===id);
+  if(!r)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-day').value=r.day;
+  document.getElementById('edit-shift').value=r.shift;
+  document.getElementById('edit-tt').value=r.tt||'';
+  document.getElementById('edit-sp').value=r.sp||'';
+  document.getElementById('edit-ot').value=r.ot||'';
+  // show all staff + anyone in this record (even if resigned/inactive)
+  const allNames=[...new Set([...getPeople(),...r.staff])];
+  const cbEl=document.getElementById('edit-staff-cb');
+  cbEl.innerHTML=allNames.map(name=>{
+    const s=getStaffByName(name);
+    const extra=s&&s.status==='resigned'?` <span style="font-size:9px;color:var(--red)">(ลาออก)</span>`:
+                 s&&s.status==='inactive'?` <span style="font-size:9px;color:var(--text3)">(พัก)</span>`:'';
+    return `<label class="cb-item ${r.staff.includes(name)?'checked':''}" id="ecb-${name}" onclick="eToggleCb(event,'${name}')">
+      <input type="checkbox" id="echk-${name}" ${r.staff.includes(name)?'checked':''}> ${name}${extra}
+    </label>`;
+  }).join('');
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function eToggleCb(e,name){
+  e.preventDefault();
+  const chk=document.getElementById('echk-'+name);
+  chk.checked=!chk.checked;
+  document.getElementById('ecb-'+name).classList.toggle('checked',chk.checked);
+}
+
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');}
+
+function saveEdit(){
+  const id=parseInt(document.getElementById('edit-id').value);
+  const idx=data.findIndex(x=>x.id===id);
+  if(idx===-1)return;
+  const day=parseInt(document.getElementById('edit-day').value);
+  const shift=document.getElementById('edit-shift').value;
+  const allNames=[...new Set([...getPeople(),...(data[idx]?.staff||[])])];
+  const staff=allNames.filter(name=>document.getElementById('echk-'+name)?.checked);
+  const tt=parseFloat(document.getElementById('edit-tt').value)||0;
+  const sp=parseFloat(document.getElementById('edit-sp').value)||0;
+  const ot=parseFloat(document.getElementById('edit-ot').value)||0;
+  const total=tt+sp+ot;
+  if(!day||!staff.length||!total){showToast('⚠️ กรุณากรอกข้อมูลให้ครบ');return;}
+  data[idx]={...data[idx],day,shift,staff,tt,sp,ot,total,avg:Math.round(total/staff.length),count:staff.length};
+  saveData();
+  closeModal();
+  showToast('✅ แก้ไขเรียบร้อยแล้ว');
+  sw(curTab);
+}
+
+function delEntry(id){
+  if(!confirm('ลบรายการนี้?'))return;
+  data=data.filter(r=>r.id!==id);
+  saveData();
+  showToast('🗑️ ลบแล้ว');
+  sw(curTab);
+}
+
+/* ===== INIT ===== */
+loadData();
+loadStaff();
+updateHeader();
+sw('input');
+</script>
+</body>
+</html>
